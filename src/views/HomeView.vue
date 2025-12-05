@@ -634,7 +634,12 @@ export default {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "MagangHub-Batch2(sumut).json";
+      
+      if (this.selectedProv.value != 0) {
+        a.download = `MagangHub_Batch3_${this.selectedProv.title}.json`;
+      } else {
+        a.download = `MagangHub_Batch3.json`;
+      }
       a.click();
     },
     async exportToExcel() {
@@ -704,7 +709,12 @@ export default {
       const blob = new Blob([excelBuffer], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      saveAs(blob, `lowongan_maganghub_${new Date().toISOString().split("T")[0]}.xlsx`);
+      if (this.selectedProv.value != 0) {
+        saveAs(blob, `maganghub_batch3_${this.selectedProv.title}_${new Date().toISOString().split("T")[0]}.xlsx`);
+      } else {
+        saveAs(blob, `maganghub_batch3_${new Date().toISOString().split("T")[0]}.xlsx`);
+        
+      }
       console.log("✅ File Excel berhasil dibuat!");
     },
     sortPagination() {
