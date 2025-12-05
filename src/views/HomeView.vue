@@ -1,302 +1,454 @@
 <template>
   <div class="font-sans min-h-screen bg-white">
-
-    <header class="bg-linear-to-r from-purple-900 to-purple-400 py-20 text-white flex flex-col items-center justify-center shadow-lg">
+    <header
+      class="bg-linear-to-r from-purple-900 to-purple-400 py-20 text-white flex flex-col items-center justify-center shadow-lg"
+    >
       <div class="w-full max-w-4xl px-4 text-center">
-          <h1 class="text-4xl font-bold mb-2">Lowongan Magang BATCH 3</h1>
-          <p class="text-lg mb-8">Jelajahi berbagai lowongan magang yang sesuai dengan minat dan keahlianmu</p>
+        <h1 class="text-4xl font-bold mb-2">Lowongan Magang BATCH 3</h1>
+        <p class="text-lg mb-8">
+          Jelajahi berbagai lowongan magang yang sesuai dengan minat dan
+          keahlianmu
+        </p>
       </div>
-      
 
       <div class="w-full max-w-4xl px-4 mb-10">
-        
-        <div class="bg-white rounded-lg shadow-xl p-3 flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 ">
-          
-          <div class="grow flex items-center border border-gray-300 rounded-lg px-4 py-2 focus-within:ring-2 focus-within:ring-purple-5D00 focus-within:border-purple-500 
-              transition duration-150">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        <div
+          class="bg-white rounded-lg shadow-xl p-3 flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3"
+        >
+          <div
+            class="grow flex items-center border border-gray-300 rounded-lg px-4 py-2 focus-within:ring-2 focus-within:ring-purple-5D00 focus-within:border-purple-500 transition duration-150"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 text-gray-400 mr-3"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
-            <input 
-              type="text" 
-              placeholder="Cari Posisi/Nama Perusahaan" 
+            <input
+              type="text"
+              placeholder="Cari Posisi/Nama Perusahaan"
               class="w-full bg-transparent focus:outline-none text-gray-700"
               v-model="keyword"
               @input="searchJob"
-            >
+            />
           </div>
-            <!-- 2. Province Select Option -->
-            <div class="w-full md:w-80">
-                <div class="relative border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-purple-5D00 focus-within:border-purple-500 transition duration-150">
-                    <v-select 
-                        :options="provinsi" 
-                        label="title"
-                        v-model="selectedProv"
-                        class="block w-full appearance-none bg-white border-none text-gray-700 py-2.5 px-4 pr-8 rounded-xl leading-tight focus:outline-none cursor-pointer"
-                        @update:modelValue="getData"
-                        placeholder="Semua Provinsi"
-                    />
-                </div>
+          <!-- 2. Province Select Option -->
+          <div class="w-full md:w-80">
+            <div
+              class="relative border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-purple-5D00 focus-within:border-purple-500 transition duration-150"
+            >
+              <v-select
+                :options="provinsi"
+                label="title"
+                v-model="selectedProv"
+                class="block w-full appearance-none bg-white border-none text-gray-700 py-2.5 px-4 pr-8 rounded-xl leading-tight focus:outline-none cursor-pointer"
+                @update:modelValue="getData"
+                placeholder="Semua Provinsi"
+              />
             </div>
+          </div>
         </div>
-
       </div>
-      
-      <p class="text-base sm:text-lg font-bold">{{ loading ? 'Sedang mengambil data... harap menunggu ^_^' : 'Data berhasil di load semua ✅' }}</p>
 
+      <p class="text-base sm:text-lg font-bold">
+        {{
+          loading
+            ? "Sedang mengambil data... harap menunggu ^_^"
+            : "Data berhasil di load semua ✅"
+        }}
+      </p>
     </header>
 
-    <main :class="[
-      'py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto',
-      {'mb-50' : loading}
-    ]
-    ">
-      
-     <h2 class="text-xl font-semibold text-gray-800 mb-6">Daftar Lowongan MagangHub</h2>
-      
-      <div class="flex flex-col sm:flex-row flex-wrap justify-between items-start sm:items-center mb-8 space-y-4 sm:space-y-0">
-        
+    <main
+      :class="[
+        'py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto',
+        { 'mb-50': loading },
+      ]"
+    >
+      <h2 class="text-xl font-semibold text-gray-800 mb-6">
+        Daftar Lowongan MagangHub
+      </h2>
+
+      <div
+        class="flex flex-col sm:flex-row flex-wrap justify-between items-start sm:items-center mb-8 space-y-4 sm:space-y-0"
+      >
         <div class="flex flex-wrap items-center space-x-4 mb-2">
-          <p class="text-gray-500 font-medium">Ditemukan {{ loading ? "..." :  totalJob  }} lowongan</p>
-
-
+          <p class="text-gray-500 font-medium">
+            Ditemukan {{ loading ? "..." : totalJob }} lowongan
+          </p>
 
           <div class="relative min-w-[150px]">
-            <select 
-               v-model="sortJobs"
-               @change="sortData"
-               class="block w-full py-2 pl-3 pr-10 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm appearance-none">
+            <select
+              v-model="sortJobs"
+              @change="sortData"
+              class="block w-full py-2 pl-3 pr-10 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm appearance-none"
+            >
               <option value="newest">Terbaru</option>
               <option value="oldest">Terlama</option>
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+                />
               </svg>
             </div>
           </div>
           <div class="relative min-w-[150px]">
-            <select 
-              :disabled=loading
+            <select
+              :disabled="loading"
               placeholder="semua"
-               v-model="sortPags"
-               @change="sortPagination"
-               class="block w-full py-2 pl-3 pr-10 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm appearance-none">
+              v-model="sortPags"
+              @change="sortPagination"
+              class="block w-full py-2 pl-3 pr-10 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm appearance-none"
+            >
               <option value="semua">Semua</option>
               <option value="20">20 Data</option>
               <option value="50">50 Data</option>
               <option value="100">100 Data</option>
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+                />
               </svg>
             </div>
           </div>
         </div>
 
         <div class="flex space-x-3">
-          <button 
+          <button
             @click="showSavedJobs = !showSavedJobs"
             :class="[
               'flex items-center px-4 py-2 border border-purple-500 text-sm font-medium rounded-md text-white bg-purple-500 hover:bg-purple-700 transition duration-150',
-              {'bg-purple-700' : showSavedJobs}
-              ]">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" :fill="showSavedJobs ? '#5B21B6' : 'none'" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3a2 2 0 00-2 2v14l7-3 7 3V5a2 2 0 00-2-2H5z" />
+              { 'bg-purple-700': showSavedJobs },
+            ]"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              :fill="showSavedJobs ? '#5B21B6' : 'none'"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 3a2 2 0 00-2 2v14l7-3 7 3V5a2 2 0 00-2-2H5z"
+              />
             </svg>
           </button>
-          <button 
-            :disabled=loading
+          <button
+            :disabled="loading"
             @click="exportToJson()"
             :class="[
               'flex items-center px-4 py-2 border border-gray-400 text-sm font-medium rounded-md text-gray-700 bg-white transition duration-150',
-              { 'hover:bg-gray-200': !loading }
-            ]">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              { 'hover:bg-gray-200': !loading },
+            ]"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-2 text-purple-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
             </svg>
             Export JSON
           </button>
-          
-          <button 
-            :disabled=loading
+
+          <button
+            :disabled="loading"
             @click="exportToExcel()"
             :class="[
               'flex items-center px-4 py-2 border border-green-500 text-sm font-medium rounded-md text-white bg-green-600',
-              { 'hover:bg-green-700 transition duration-150' : !loading}
-              ]">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414a1 1 0 00-.707-.293H7a2 2 0 00-2 2v14a2 2 0 002 2zM9 15h6m-6 4h6" />
+              { 'hover:bg-green-700 transition duration-150': !loading },
+            ]"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414a1 1 0 00-.707-.293H7a2 2 0 00-2 2v14a2 2 0 002 2zM9 15h6m-6 4h6"
+              />
             </svg>
             Export XLSX
           </button>
-
         </div>
       </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-    
-      <div 
-          v-for="(job, index) in listToShow" 
-          :key="index" 
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div
+          v-for="(job, index) in listToShow"
+          :key="index"
           class="bg-white rounded-2xl shadow-xl border border-purple-200 hover:shadow-2xl hover:-translate-y-1 transition duration-300 overflow-hidden relative group"
-      >
-        <a :href="url+job.id_posisi" target="_blank" class="block h-full">
-          
-          <div class="absolute top-0 right-0 m-3 px-3 py-1 text-white text-xs font-bold rounded-full shadow-md"
-              :class="getOpportunityColorClass(job.jumlah_terdaftar, job.jumlah_kuota)">
-            Peluang : {{ getOpportunityPercentage(job.jumlah_terdaftar, job.jumlah_kuota) }}%
-          </div>
-
-          <div class="p-5">
-            <div class="mb-4 pt-6">
-              <p class="text-lg font-bold text-gray-800 leading-snug group-hover:text-purple-600 transition duration-150">{{ job.posisi }}</p>
-              <p class="text-sm text-gray-600 mt-1">{{ job.perusahaan.nama_perusahaan }}</p>
+        >
+          <a :href="url + job.id_posisi" target="_blank" class="block h-full">
+            <div
+              class="absolute top-0 right-0 m-3 px-3 py-1 text-white text-xs font-bold rounded-full shadow-md"
+              :class="
+                getOpportunityColorClass(job.jumlah_terdaftar, job.jumlah_kuota)
+              "
+            >
+              Peluang :
+              {{
+                getOpportunityPercentage(
+                  job.jumlah_terdaftar,
+                  job.jumlah_kuota
+                )
+              }}%
             </div>
 
-            <p class="text-xs text-gray-400 mb-4 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-400 mr-1.5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-              </svg>
-              {{ job.perusahaan.nama_kabupaten }}, {{ job.perusahaan.nama_provinsi }}
-            </p>
-            
-            <hr class="my-3 border-gray-100">
-
-            <div class="flex items-center justify-between mt-3">
-  
-              <!-- Bagian Kiri: Tanggal, pelamar, kebutuhan -->
-              <div class="flex flex-col space-y-2 text-sm text-gray-500 grow">
-                <!-- Tanggal -->
-                <div class="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <span class="text-xs">{{ job.created_at }}</span>
-                </div>
-
-                <!-- Pelamar & Kebutuhan -->
-                <div class="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                  <span class="text-xs font-semibold">{{ job.jumlah_terdaftar }} pelamar</span>
-                  <span class="text-xs mx-1 text-gray-300">|</span>
-                  <span class="text-xs">{{ job.jumlah_kuota }} kebutuhan</span>
-                </div>
+            <div class="p-5">
+              <div class="mb-4 pt-6">
+                <p
+                  class="text-lg font-bold text-gray-800 leading-snug group-hover:text-purple-600 transition duration-150"
+                >
+                  {{ job.posisi }}
+                </p>
+                <p class="text-sm text-gray-600 mt-1">
+                  {{ job.perusahaan.nama_perusahaan }}
+                </p>
               </div>
 
-              <!-- Bagian Kanan: Save Button -->
-              <button 
-                type="button"
-                @mousedown.stop
-                @click.stop.prevent="saveJob(job)"
-                class="p-2 rounded-full hover:bg-gray-100 transition ml-3"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    :class="['h-10 w-10',
-                      savedIds.includes(job.id_posisi) ? 'text-purple-800' : 'text-gray-500 hover:text-purple-500'
+              <p class="text-xs text-gray-400 mb-4 flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 text-red-400 mr-1.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                {{ job.perusahaan.nama_kabupaten }},
+                {{ job.perusahaan.nama_provinsi }}
+              </p>
+
+              <hr class="my-3 border-gray-100" />
+
+              <div class="flex items-center justify-between mt-3">
+                <!-- Bagian Kiri: Tanggal, pelamar, kebutuhan -->
+                <div class="flex flex-col space-y-2 text-sm text-gray-500 grow">
+                  <!-- Tanggal -->
+                  <div class="flex items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4 text-gray-400 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                    <span class="text-xs">{{ job.created_at }}</span>
+                  </div>
+
+                  <!-- Pelamar & Kebutuhan -->
+                  <div class="flex items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4 text-gray-400 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                    <span class="text-xs font-semibold"
+                      >{{ job.jumlah_terdaftar }} pelamar</span
+                    >
+                    <span class="text-xs mx-1 text-gray-300">|</span>
+                    <span class="text-xs"
+                      >{{ job.jumlah_kuota }} kebutuhan</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Bagian Kanan: Save Button -->
+                <button
+                  type="button"
+                  @mousedown.stop
+                  @click.stop.prevent="saveJob(job)"
+                  class="p-2 rounded-full hover:bg-gray-100 transition ml-3"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    :class="[
+                      'h-10 w-10',
+                      savedIds.includes(job.id_posisi)
+                        ? 'text-purple-800'
+                        : 'text-gray-500 hover:text-purple-500',
                     ]"
-                    viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M5 3a2 2 0 00-2 2v14l7-3 7 3V5a2 2 0 00-2-2H5z" />
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M5 3a2 2 0 00-2 2v14l7-3 7 3V5a2 2 0 00-2-2H5z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div
+        class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
+      >
+        <div class="flex flex-1 justify-between sm:hidden">
+          <a
+            href="#"
+            class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >Previous</a
+          >
+          <a
+            href="#"
+            class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >Next</a
+          >
+        </div>
+        <div
+          class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between"
+        >
+          <div>
+            <p class="text-sm text-gray-700">
+              Showing
+              <span class="font-medium">{{ startItemIndex }}</span>
+              to
+              <span class="font-medium">{{ endItemIndex }}</span>
+              of
+              <span class="font-medium">{{ totalJob }}</span>
+              results
+            </p>
+          </div>
+          <div v-show="!loading">
+            <nav
+              aria-label="Pagination"
+              class="isolate inline-flex -space-x-px rounded-md shadow-xs"
+            >
+              <!-- Previous Button -->
+              <button
+                @click="prevPage"
+                :disabled="currentPage === 1"
+                class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <span class="sr-only">Previous</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                  <path
+                    d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z"
+                  />
                 </svg>
               </button>
-            </div>
-          </div>
-        </a>
-      </div>
 
-    </div>
-
-    <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
-      <div class="flex flex-1 justify-between sm:hidden">
-        <a href="#" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
-        <a href="#" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
-      </div>
-      <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-        <div>
-          <p class="text-sm text-gray-700">
-            Showing
-            <span class="font-medium">{{ startItemIndex }}</span>
-            to
-            <span class="font-medium">{{ endItemIndex }}</span>
-            of
-            <span class="font-medium">{{ totalJob }}</span>
-            results
-          </p>
-        </div>
-        <div v-show="!loading">
-          <nav aria-label="Pagination" class="isolate inline-flex -space-x-px rounded-md shadow-xs">
-            <!-- Previous Button -->
-            <button
-              @click="prevPage"
-              :disabled="currentPage === 1"
-              class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-300
-                hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              <span class="sr-only">Previous</span>
-              <svg viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" />
-              </svg>
-            </button>
-
-            <!-- Numbered buttons -->
-            <template v-for="(page, index) in paginatedPages" :key="index">
-              <span 
+              <!-- Numbered buttons -->
+              <template v-for="(page, index) in paginatedPages" :key="index">
+                <span
                   v-if="page === '...'"
                   class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 inset-ring inset-ring-gray-300"
                   aria-hidden="true"
-              >
+                >
                   {{ page }}
-              </span>
+                </span>
 
-              <button
+                <button
                   v-else
                   @click="goToPage(page)"
                   :class="[
-                      'relative inline-flex items-center px-4 py-2 text-sm font-semibold inset-ring inset-ring-gray-300 focus:z-20 focus:outline-offset-0',
-                      page === currentPage
-                          ? 'z-10 bg-purple-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600'
-                          : 'text-gray-900 hover:bg-gray-50'
+                    'relative inline-flex items-center px-4 py-2 text-sm font-semibold inset-ring inset-ring-gray-300 focus:z-20 focus:outline-offset-0',
+                    page === currentPage
+                      ? 'z-10 bg-purple-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600'
+                      : 'text-gray-900 hover:bg-gray-50',
                   ]"
-              >
+                >
                   {{ page }}
+                </button>
+              </template>
+
+              <!-- Next Button -->
+              <button
+                @click="nextPage"
+                :disabled="currentPage === totalPages"
+                class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <span class="sr-only">Next</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                  <path
+                    d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z"
+                  />
+                </svg>
               </button>
-          </template>
-
-            <!-- Next Button -->
-            <button
-              @click="nextPage"
-              :disabled="currentPage === totalPages"
-              class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-300
-                hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              <span class="sr-only">Next</span>
-              <svg viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                <path d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" />
-              </svg>
-            </button>
-
-          </nav>
+            </nav>
+          </div>
         </div>
       </div>
-    </div>
-
-
     </main>
 
-    
-  <footer>
-    <div class="bg-linear-to-r from-purple-900 to-purple-400 py-10 text-white flex flex-col items-center justify-center shadow-lg">
-     © 2025 | Created By M Fahru Rozi | kodeku.site
-    </div>
-  </footer>
-
+    <footer>
+      <div
+        class="bg-linear-to-r from-purple-900 to-purple-400 py-10 text-white flex flex-col items-center justify-center shadow-lg"
+      >
+        © 2025 | Created By M Fahru Rozi | kodeku.site
+      </div>
+    </footer>
   </div>
-
 </template>
 
 <script>
@@ -312,7 +464,6 @@ export default {
   data(){
    return{
       showSavedJobs: false,
-      abortController: null,
       jobs: [],
       savedJobs: [],
       totalJob: '',
@@ -368,7 +519,8 @@ export default {
         { title: "Sumatera Barat", value: 13 },
         { title: "Sumatera Selatan", value: 16 },
         { title: "Sumatera Utara", value: 12 }
-      ]
+      ],
+      currentToken: null,
 
    }
   }, computed: {
@@ -381,10 +533,10 @@ export default {
       if (this.perPage === this.filteredJobs.length) {
           return 1;
       }
-      
+
       // Rumus standar: (currentPage - 1) * perPage + 1
       const start = (this.currentPage - 1) * this.perPage + 1;
-      
+
       // Pastikan tidak lebih dari total data jika data kosong
       return this.filteredJobs.length === 0 ? 0 : start;
     },
@@ -394,7 +546,7 @@ export default {
       }
       // Menghitung indeks data akhir yang ditampilkan.
       const end = this.currentPage * this.perPage;
-      
+
       // Gunakan nilai yang lebih kecil antara hasil perhitungan atau total jumlah data yang difilter.
       return Math.min(end, this.filteredJobs.length);
     },
@@ -417,7 +569,7 @@ export default {
         }
         pages.push('...');
         pages.push(total);
-      } 
+      }
       // Tombol akhir: ...[98], [99]
       else if (current >= total - maxButtons + 2) {
         pages.push(1);
@@ -425,7 +577,7 @@ export default {
         for (let i = total - maxButtons + 1; i <= total; i++) {
           pages.push(i);
         }
-      } 
+      }
       // Tombol di tengah: [1],...[4],[5],[6],...[99]
       else {
         pages.push(1);
@@ -436,7 +588,7 @@ export default {
         pages.push('...');
         pages.push(total);
       }
-      
+
       // Filter untuk menghindari duplikat dan pastikan '...' tidak bersebelahan dengan angka
       return pages.filter((item, index, arr) => {
           if (item === '...' && (arr[index - 1] === '...' || arr[index + 1] === '...')) {
@@ -465,35 +617,28 @@ export default {
     },
 
     // helper: axios GET dengan retry otomatis
-    async  axiosGetWithRetry(url, retry = 3, delayMs = 300, signal) {
+    async  axiosGetWithRetry(url, retry = 3, delayMs = 500) {
       for (let attempt = 1; attempt <= retry; attempt++) {
         try {
-          return await axios.get(url, { timeout: 10000000, signal: signal });
+          return await axios.get(url, { timeout: 10000000});
         } catch (err) {
-          if (axios.isCancel(err)) { // <--- Cek apakah dibatalkan
-              console.log("Request dibatalkan.");
-              throw err; // Lempar error agar loop 'getData' berhenti
-          }
           console.warn(`⚠️ Request gagal (percobaan ${attempt}/${retry})`, err.message);
-          if (attempt === retry) throw err; 
+          if (attempt === retry) throw err;
           await this.delay(delayMs);
         }
       }
     },
     async getData() {
-      // 1️⃣ Pembatalan Request Lama
-      if (this.abortController) {
-          console.warn("Membatalkan proses pengambilan data sebelumnya...");
-          this.abortController.abort();
-      }
-      this.abortController = new AbortController(); // Buat Controller baru
-      const signal = this.abortController.signal; // Ambil signal
+
+      // buat token baru untuk request terbaru
+      const myToken = Symbol("run");
+      this.currentToken = myToken;
 
       this.loading = true;
       this.jobs = [];
       this.filteredJobs = [];
       this.paginatedJobs = [];
-      
+
       const baseUrl = "https://maganghub.kemnaker.go.id/be/v1/api/list/vacancies-aktif/";
       const limit = 20;
 
@@ -505,6 +650,11 @@ export default {
 
       try {
         while (true) {
+           if (this.currentToken !== myToken) {
+              console.log("Set Provinsi: "+this.selectedProv.value);
+              return;
+            }
+
           if (this.selectedProv.value != 0) {
             const kodeProvinsi = this.selectedProv.value;
             url = `${baseUrl}?order_by=created_at&order_direction=DESC&page=${page}&limit=${limit}&kode_provinsi=${kodeProvinsi}`;
@@ -513,15 +663,25 @@ export default {
           }
 
 
-          const res = await this.axiosGetWithRetry(url, 3, 400, signal);
+          const res = await this.axiosGetWithRetry(url, 3, 400);
+
+          // ❗ cancel check lagi setelah tiap async
+          if (this.currentToken !== myToken) {
+            return;
+          }
+
           const data = res.data?.data || [];
 
           if (data.length === 0) break;
 
-          if (signal.aborted) throw new Error("Abort signal received during processing");
           buffer.push(...data);
 
           if (page % 5 === 0) {
+            
+            if (this.stop) {
+              return this.getData();     // restart
+            }
+            
             // Urutkan berdasarkan created_at descending
             buffer.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
@@ -536,6 +696,11 @@ export default {
 
             // Force render update UI
             await this.$nextTick();
+
+            // ❗ cancel check lagi
+            if (this.currentToken !== myToken) {
+              return;
+            }
 
           }
 
@@ -555,13 +720,6 @@ export default {
         }
         console.log(`🎉 Total data: ${this.jobs.length}`);
       } catch (err) {
-        if (axios.isCancel(err) || err.message === "Abort signal received during processing") {
-            console.log("Proses pengambilan data dihentikan karena ada permintaan baru.");
-            // HENTIKAN proses loading dan set abortController ke null
-            this.loading = false;
-            this.abortController = null; 
-            return; // EXIT dari fungsi, tidak perlu masuk ke finally atau fallback
-        }
 
         console.error("❌ Gagal mengambil data:", err);
         console.warn("🔁 Menggunakan data cadangan dari jobs_backup.json...");
@@ -595,15 +753,15 @@ export default {
           // end fallback data
 
       } finally {
-        // Hanya jalankan ini jika proses berhasil atau gagal (bukan karena dibatalkan)
-        if (!this.abortController?.signal.aborted) {
+        if (this.currentToken === myToken) {
             this.loading = false;
             this.totalJob = this.jobs.length;
-            this.updatePagination();
-            this.abortController = null; // Reset controller setelah selesai
-        }
-
+            this.updatePagination();     // restart
+          }
+            
       }
+
+      
     },
     searchJob(){
       this.filteredJobs = this.jobs.filter(job => job.posisi.toLowerCase().includes(this.keyword.toLowerCase()) || job.perusahaan.nama_perusahaan.toLowerCase().includes(this.keyword.toLowerCase()))
@@ -620,7 +778,7 @@ export default {
       if(this.sortJobs == 'newest'){
          this.filteredJobs.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       }
-      
+
       this.currentPage = 1;
       this.updatePagination();
 
@@ -634,7 +792,7 @@ export default {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      
+
       if (this.selectedProv.value != 0) {
         a.download = `MagangHub_Batch3_${this.selectedProv.title}.json`;
       } else {
@@ -713,7 +871,7 @@ export default {
         saveAs(blob, `maganghub_batch3_${this.selectedProv.title}_${new Date().toISOString().split("T")[0]}.xlsx`);
       } else {
         saveAs(blob, `maganghub_batch3_${new Date().toISOString().split("T")[0]}.xlsx`);
-        
+
       }
       console.log("✅ File Excel berhasil dibuat!");
     },
@@ -760,20 +918,20 @@ export default {
     getOpportunityColorClass(terdaftar, kuota) {
       const percentage = this.getOpportunityPercentage(terdaftar, kuota);
       const value = parseFloat(percentage);
-      
+
       // 1. Peluang Rendah (Kurang dari 10%)
       if (value < 10) {
-        return 'bg-red-600'; 
+        return 'bg-red-600';
       }
 
       // 2. Peluang Rendah (Kurang dari 30%)
       if (value < 30) {
-        return 'bg-purple-400'; 
+        return 'bg-purple-400';
       }
-      
+
       // 3. Peluang Tinggi (70% ke atas)
       if (value >= 80) {
-        return 'bg-purple-900'; 
+        return 'bg-purple-900';
       }
 
       // 4. Peluang Sedang (30% sampai < 70%)
@@ -781,7 +939,7 @@ export default {
     },
     saveJob(data) {
       const exists = this.savedJobs.find(i => i.id_posisi === data.id_posisi)
-      
+
       if (exists){
         this.savedJobs = this.savedJobs.filter(i => i.id_posisi !== data.id_posisi)
       } else {
@@ -791,7 +949,6 @@ export default {
       localStorage.setItem("savedJobs", JSON.stringify(this.savedJobs))
     }
 
-
   },
 }
 </script>
@@ -800,11 +957,11 @@ export default {
   padding-block: calc(var(--spacing) * 2);
   padding-right: 2%;
 }
-.v-select .vs__dropdown-toggle{
-  border: none;      
+.v-select .vs__dropdown-toggle {
+  border: none;
 }
 .v-select .vs__dropdown-option--highlight {
-    background: #755dbe !important; /* purple-400 */
-    color: #fff !important; /* Ubah teks menjadi putih */
+  background: #755dbe !important; /* purple-400 */
+  color: #fff !important; /* Ubah teks menjadi putih */
 }
 </style>
