@@ -725,7 +725,7 @@ export default {
         console.warn("🔁 Menggunakan data cadangan dari jobs_backup.json...");
           // try fallback data
           try {
-            const backupRes = await fetch("/jobs_backup.json");
+            const backupRes = await fetch("/jobs_backupfull.json");
             if (!backupRes.ok) throw new Error("Gagal memuat file backup JSON");
 
             const backupData = await backupRes.json();
