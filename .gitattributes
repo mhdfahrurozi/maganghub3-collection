@@ -1,3 +1,2 @@
 * text=auto eol=lf
 public/jobs_backup.json filter=lfs diff=lfs merge=lfs -text
-*.json filter=lfs diff=lfs merge=lfs -text
